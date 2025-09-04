@@ -16,8 +16,9 @@ public class ProductService {
         this.productClient = productClient;
     }
 
-    public Flux<Product> getProducts() {
-        return productClient.getAllProducts();
+    public Flux<Product> getProducts(String title, Double price, Double priceMin, Double priceMax,
+            Integer categoryId, String categorySlug) {
+        return productClient.getAllProducts(title, price, priceMin, priceMax, categoryId, categorySlug);
     }
 
     public Mono<Product> getProduct(Integer id) {

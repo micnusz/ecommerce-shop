@@ -3,6 +3,8 @@ package micnusz.backend.category;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import micnusz.backend.category.dto.CategoryApiDto;
+import micnusz.backend.category.map.CategoryMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,14 +17,17 @@ public class CategoryClient {
     }
 
     public Flux<Category> getCategories() {
-        return webClient.get().uri("/categories").retrieve().bodyToFlux(Category.class);
+        return webClient.get().uri("/categories").retrieve().bodyToFlux(CategoryApiDto.class)
+                .map(CategoryMapper::toDomain);
     }
 
     public Mono<Category> getCategoryById(Integer id) {
-        return webClient.get().uri("/categories/{id}", id).retrieve().bodyToMono(Category.class);
+        return webClient.get().uri("/categories/{id}", id).retrieve().bodyToMono(CategoryApiDto.class)
+                .map(CategoryMapper::toDomain);
     }
 
     public Mono<Category> getCategoryBySlug(String slug) {
-        return webClient.get().uri("/categories/slug/{slug}", slug).retrieve().bodyToMono(Category.class);
+        return webClient.get().uri("/categories/slug/{slug}", slug).retrieve().bodyToMono(CategoryApiDto.class)
+                .map(CategoryMapper::toDomain);
     }
 }

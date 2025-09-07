@@ -38,6 +38,7 @@ public class ProductClient {
     }
 
     public Mono<Product> getProductById(Integer id) {
-        return webClient.get().uri("/products/{id}", id).retrieve().bodyToMono(Product.class);
+        return webClient.get().uri("/products/{id}", id).retrieve().bodyToMono(ProductApiDto.class)
+                .map(ProductMapper::toDomain);
     }
 }

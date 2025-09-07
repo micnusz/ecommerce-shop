@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class CategoryClient {
-    private WebClient webClient;
+    private final WebClient webClient;
 
     public CategoryClient(WebClient.Builder builder) {
         this.webClient = builder.baseUrl("https://api.escuelajs.co/api/v1").build();

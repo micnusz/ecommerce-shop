@@ -3,6 +3,8 @@ package micnusz.backend.product;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import micnusz.backend.product.dto.ProductApiDto;
+import micnusz.backend.product.map.ProductMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +34,7 @@ public class ProductClient {
             if (categorySlug != null)
                 builder.queryParam("categorySlug", categorySlug);
             return builder.build();
-        }).retrieve().bodyToFlux(Product.class);
+        }).retrieve().bodyToFlux(ProductApiDto.class).map(ProductMapper::toDomain);
     }
 
     public Mono<Product> getProductById(Integer id) {

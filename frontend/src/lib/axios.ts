@@ -2,14 +2,13 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api",
+  baseURL: "http://localhost:8080/api",
   headers: {
     "Content-Type": "application/json",
   },
   timeout: 5000,
 });
 
-//interceptors for logging or error handling
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -1,7 +1,13 @@
-export default function Home() {
+"use server";
+
+import { ProductsGrid } from "@/components/ProductsGrid";
+import { fetchProducts } from "@/lib/queries";
+
+export default async function Home() {
+  const products = await fetchProducts();
   return (
     <div>
-      <h1>hej</h1>
+      <ProductsGrid serverProducts={products} />
     </div>
   );
 }

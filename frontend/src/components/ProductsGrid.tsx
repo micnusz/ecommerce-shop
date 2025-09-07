@@ -1,10 +1,11 @@
 "use client";
-import { Product } from "@/app/types/types";
+import { ProductResponse } from "@/app/types/types";
 import { fetchProducts } from "@/lib/queries";
 import { useQuery } from "@tanstack/react-query";
+import { ProductCard } from "./ProductCard";
 
 type Props = {
-  serverProducts?: Product[];
+  serverProducts?: ProductResponse;
 };
 
 export const ProductsGrid = ({ serverProducts }: Props) => {
@@ -17,10 +18,12 @@ export const ProductsGrid = ({ serverProducts }: Props) => {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error!</p>;
   return (
-    <ul>
-      {data?.map((product) => (
-        <li key={product.id}>{product.title}</li>
-      ))}
-    </ul>
+    <div className="px-4 py-4">
+      <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        {data?.products.map((product) => (
+          <ProductCard product={product} key={product.id} />
+        ))}
+      </ul>
+    </div>
   );
 };

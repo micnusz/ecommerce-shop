@@ -6,9 +6,6 @@ import {
   Sheet,
   SheetTrigger,
   SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
   SheetClose,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -56,7 +53,7 @@ export const Header = () => {
           </div>
 
           <div className="mt-4 flex flex-col gap-4">
-            {cartItems.length === 0 && <p>Your cart is empty</p>}
+            {cartItems.length === 0 && <p>Your cart is empty.</p>}
 
             {cartItems.map((item) => (
               <div
@@ -75,6 +72,7 @@ export const Header = () => {
                   </p>
                   <Button
                     onClick={() => useCartStore.getState().removeItem(item.id)}
+                    size="icon"
                     className="text-gray-400 hover:text-gray-200 rounded-2xl"
                     variant="ghost"
                   >
@@ -96,6 +94,7 @@ export const Header = () => {
 
           <SheetClose asChild>
             <Button
+              size="sm"
               variant="ghost"
               className="absolute top-4 right-4 p-1 rounded-2xl"
             >

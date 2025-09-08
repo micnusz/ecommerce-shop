@@ -28,11 +28,9 @@ public class ProductController {
             @RequestParam(required = false) Double price,
             @RequestParam(required = false) Double priceMin,
             @RequestParam(required = false) Double priceMax,
-            @RequestParam(required = false) Integer categoryId,
-            @RequestParam(required = false) String categorySlug,
-            @RequestParam(required = true, defaultValue = "0") Integer skip,
-            @RequestParam(required = true, defaultValue = "20") Integer limit) {
-        return productService.getProducts(title, price, priceMin, priceMax, categoryId, categorySlug, skip, limit)
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(defaultValue = "20") Integer limit) {
+        return productService.getProducts(title, price, priceMin, priceMax, skip, limit)
                 .map(paged -> new PagedResponse<>(
                         paged.products().stream()
                                 .map(ProductMapper::toResponse)

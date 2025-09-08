@@ -17,41 +17,26 @@ public class ProductClient {
         this.webClient = builder.baseUrl("https://dummyjson.com").build();
     }
 
-    public Mono<PagedResponse<Product>> getAllProducts(String title, Double price, Double priceMin, Double priceMax,
-            Integer categoryId, String categorySlug, Integer skip, Integer limit) {
-        return webClient.get().uri(uriBuilder -> {
-            var builder = uriBuilder.path("/products");
-            if (title != null)
-                builder.queryParam("title", title);
-            if (price != null)
-                builder.queryParam("price", price);
-            if (priceMin != null)
-                builder.queryParam("priceMin", priceMin);
-            if (priceMax != null)
-                builder.queryParam("priceMax", priceMax);
-            if (categoryId != null)
-                builder.queryParam("categoryId", categoryId);
-            if (categorySlug != null)
-                builder.queryParam("categorySlug", categorySlug);
-            if (skip != null)
-                builder.queryParam("skip", skip);
-            if (limit != null)
-                builder.queryParam("limit", limit);
-            return builder.build();
-        }).retrieve()
+    // Pobieramy wszystkie produkty naraz
+    public Mono<PagedResponse<Product>> getAllProducts() {
+        return webClient.get()
+                .uri("/products") // ignorujemy skip/limit i sortowanie
+                .retrieve()
                 .bodyToMono(DummyJsonResponse.class)
                 .map(resp -> new PagedResponse<>(
                         resp.products().stream()
                                 .map(ProductMapper::toDomain)
                                 .toList(),
                         resp.total(),
-                        resp.skip(),
-                        resp.limit()));
-
+                        0,
+                        resp.products().size() // lokalnie będziemy paginować
+                ));
     }
 
     public Mono<Product> getProductById(Integer id) {
-        return webClient.get().uri("/products/{id}", id).retrieve().bodyToMono(ProductApiDto.class)
+        return webClient.get().uri("/products/{id}", id)
+                .retrieve()
+                .bodyToMono(ProductApiDto.class)
                 .map(ProductMapper::toDomain);
     }
 }
